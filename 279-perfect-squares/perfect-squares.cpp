@@ -1,17 +1,26 @@
 
 class Solution {
 public:
-    int numSquares(int n) {
-        vector<int> dp(n + 1, n + 1);
+   int dp[10001];
+    int solve(int n) {
+        if(n == 0)
+            return 0;
 
-        dp[0] = 0;
+        int ans = INT_MAX;
 
-        for(int i = 1; i <= n; i++) {
-            for(int j = 1; j * j <= i; j++) {
-                dp[i] = min(dp[i], 1 + dp[i - j*j]);
-            }
+        if(dp[n] != -1){
+            return dp[n];
         }
 
-        return dp[n];
+        for(int j = 1; j * j <= n; j++) {
+            ans = min(ans, 1 + solve(n - j*j));
+        }
+
+        return dp[n] = ans;
+    }
+
+    int numSquares(int n) {
+        memset(dp, -1, sizeof(dp));
+        return solve(n);
     }
 };
